@@ -13,17 +13,15 @@ font_button = pygame.font.Font(None, 36)
 
 
 class Button:
-    def __init__(self, text, rx, ry, action, rwidth, rheight, font, color_darck):
+    def __init__(self, text, rx, ry, action, font, color_dark):
         self.text = text 
         self.action = action
         self.rx = rx          
         self.ry = ry
-        self.rwidth = rwidth
-        self.rheight = rheight
         self.rect = pygame.Rect(0, 0, 0, 0)
         self.font = font
-        self.color_drack = color_darck
-        self.color_light = tuple(min(c + 60, 255) for c in self.color_darck)
+        self.color_dark = color_dark
+        self.color_light = tuple(min(c + 60, 255) for c in self.color_dark)
     
     def update_rect(self, win_width, win_height):
         text_width, text_height = self.font.size(self.text)
@@ -43,8 +41,8 @@ class Button:
         if self.rect.collidepoint(mouse_pos):
             current_color = self.color_light
         else:
-            current_color = self.color_drack
-            
+            current_color = self.color_dark
+
         button_surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
         pygame.draw.rect(button_surface, current_color, (0, 0, self.rect.width, self.rect.height), border_radius = 16)
         win.blit(button_surface, self.rect.topleft)
@@ -55,7 +53,8 @@ class Button:
 
     def is_cliked(self, mouse_pos, mouse_pressed):
         return self.rect.collidepoint(mouse_pos) and mouse_pressed[0]
-    
+
+play_button = Button(text="Jouer", rx=0.5, ry=0.5, action="game", font=font_button, color_dark=(0, 0, 0))    
 clock = pygame.time.Clock()
 running = True
 
@@ -68,7 +67,26 @@ while running:
         
         elif event.type == pygame.VIDEORESIZE:
             window = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
-    
+
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+            if play_button.is_cliked(mouse_pos, mouse_pressed):
+                game_status = play_button.action
+
+    win_w, win_h = window.get_size()
+    window.fill((0, 0, 0))  
+
+    if game_status == 'menu':
+        
+        title_surf = font_title.render("pong game", True, (255, 255, 255))
+        title_rect = title_surf.get_rect()
+        title_rect.centerx = win_w // 2
+        title_rect.top = int(win_h * 0.15)
+        window.blit(title_surf, title_rect)
+        
+        play_button.draw(window, window.get_width(), window.get_height(), pygame.mouse.get_pos())
+
     
     
     
