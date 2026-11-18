@@ -11,6 +11,8 @@ pygame.display.set_caption("pong_game")
 font_title = pygame.font.Font(None, 72)
 font_button = pygame.font.Font(None, 36)
 
+background_menu = pygame.transform.scale(pygame.image.load("pong_game/assets/menu_background.png"), (800, 600))
+
 
 class Button:
     def __init__(self, text, rx, ry, action, font, color_dark):
@@ -67,6 +69,7 @@ while running:
         
         elif event.type == pygame.VIDEORESIZE:
             window = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
+            background_menu = pygame.transform.scale(pygame.image.load("pong_game/assets/menu_background.png"), (event.w, event.h))
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
@@ -78,11 +81,13 @@ while running:
     window.fill((0, 0, 0))  
 
     if game_status == 'menu':
-        
+
+        window.blit(background_menu, (0, 0))
+
         title_surf = font_title.render("pong game", True, (255, 255, 255))
         title_rect = title_surf.get_rect()
         title_rect.centerx = win_w // 2
-        title_rect.top = int(win_h * 0.15)
+        title_rect.top = int(win_h * 0.07)
         window.blit(title_surf, title_rect)
         
         play_button.draw(window, window.get_width(), window.get_height(), pygame.mouse.get_pos())
