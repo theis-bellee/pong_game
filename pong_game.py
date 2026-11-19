@@ -5,13 +5,14 @@ pygame.init()
 
 game_status = "menu"
 
-window = pygame.display.set_mode((800, 600), pygame.RESIZABLE)
+window = pygame.display.set_mode((800, 600), pygame.RESIZABLE, pygame.FULLSCREEN)
 pygame.display.set_caption("pong_game")
 
 font_title = pygame.font.Font(None, 72)
 font_button = pygame.font.Font(None, 36)
 
-background_menu = pygame.transform.scale(pygame.image.load("pong_game/assets/menu_background.png"), (800, 600))
+image_menu = pygame.image.load("pong_game/assets/candidat_menu_backgroung2.png")
+background_menu = pygame.transform.scale(image_menu, (800, 600))
 
 
 class Button:
@@ -56,7 +57,7 @@ class Button:
     def is_cliked(self, mouse_pos, mouse_pressed):
         return self.rect.collidepoint(mouse_pos) and mouse_pressed[0]
 
-play_button = Button(text="Jouer", rx=0.5, ry=0.5, action="game", font=font_button, color_dark=(0, 0, 0))    
+play_button = Button(text="Jouer", rx=0.12, ry=0.9, action="game", font=font_button, color_dark=(0, 0, 0))    
 clock = pygame.time.Clock()
 running = True
 
@@ -69,7 +70,7 @@ while running:
         
         elif event.type == pygame.VIDEORESIZE:
             window = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
-            background_menu = pygame.transform.scale(pygame.image.load("pong_game/assets/menu_background.png"), (event.w, event.h))
+            background_menu = pygame.transform.scale(image_menu, (event.w, event.h))
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
@@ -86,8 +87,8 @@ while running:
 
         title_surf = font_title.render("pong game", True, (255, 255, 255))
         title_rect = title_surf.get_rect()
-        title_rect.centerx = win_w // 2
-        title_rect.top = int(win_h * 0.07)
+        title_rect.centerx = int(win_w * 0.19)
+        title_rect.top = int(win_h * 0.7)
         window.blit(title_surf, title_rect)
         
         play_button.draw(window, window.get_width(), window.get_height(), pygame.mouse.get_pos())
